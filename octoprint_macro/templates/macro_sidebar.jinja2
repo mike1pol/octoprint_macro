@@ -1,0 +1,9 @@
+<div class="control-group">
+   <div class="controls">
+      <div data-bind="foreach: settings.settings.plugins.macro.macros">
+         <!-- ko if: active -->
+         <button class="btn btn-block" data-bind="text: name, click: $parent.executeMacro, enable: $parent.isActive()"></button>
+         <!-- /ko -->
+      </div>
+   </div>
+</div>
