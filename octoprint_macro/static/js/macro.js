@@ -14,17 +14,7 @@ $(function () {
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
         self.executeMacro = function() {
-            var i=-1;
-            
-            function replaceParams(match) {
-               i++;
-               return self.parameters()[i]["value"];
-            }
-            
-            expanded = self.macro.replace(paramObjRegex, replaceParams)
-            expanded = expanded.replace(/(?:\r\n|\r|\n)/g, " ");
-            
-            OctoPrint.control.sendGcode(expanded);
+            OctoPrint.control.sendGcode(this.macro());
          }
     }
     OCTOPRINT_VIEWMODELS.push({
