@@ -1,6 +1,5 @@
 # Macro
-
-**TODO:** Describe what your plugin does.
+Adds feature to create various gcode macros and display them in sidebar menu
 
 ## Setup
 
@@ -9,9 +8,3 @@ or manually using this URL:
 
     https://github.com/mike1pol/octoprint_macro/archive/master.zip
 
-**TODO:** Describe how to install your plugin, if more needs to be done than just installing it via pip or through
-the plugin manager.
-
-## Configuration
-
-**TODO:** Describe your plugin's configuration options (if any).
