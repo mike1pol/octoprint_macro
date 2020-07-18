@@ -12,6 +12,7 @@ $(function () {
             self.settings.settings.plugins.macro.macros.push({
                 name: 'Macro',
                 macro: '',
+                type: 'default',
                 active: true
             });
         }

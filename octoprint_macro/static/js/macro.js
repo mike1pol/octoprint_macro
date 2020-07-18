@@ -13,9 +13,27 @@ $(function () {
         self.isActive = function () {
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
-        self.executeMacro = function() {
-            OctoPrint.control.sendGcode(this.macro());
-         }
+        self.executeMacro = function () {
+            const macro = this.macro();
+            const commands = macro.split('\n');
+            for (let i = 0; i < commands.length; i += 1) {
+                const command = commands[i];
+                if (!command.includes(';;')) {
+                    OctoPrint.control.sendGcode(command.trim());
+                } else if (!command.startsWith(';;')) {
+                    const idx = command.indexOf(';;');
+                    const newCommand = command.slice(0, idx);
+                    OctoPrint.control.sendGcode(newCommand.trim());
+                }
+            }
+        }
+        self.getClass = function () {
+            var columns = this.settings.settings.plugins.macro.column();
+            return `macro-column-${columns <= 0 || columns > 5 ? 1 : columns}`;
+        }
+        self.getBtnClass = function (type) {
+            return `btn-${typeof type === 'function' ? type() : type}`;
+        }
     }
     OCTOPRINT_VIEWMODELS.push({
         construct: MacroViewModel,

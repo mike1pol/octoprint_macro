@@ -1,1 +1,35 @@
 /* TODO: Have your plugin's CSS files generated to here. */
+.macro-mb20 {
+    margin-bottom: 20px;
+}
+
+.span4 select {
+    max-width: 100%;
+}
+
+.macro-btn {
+    display: grid;
+}
+.macro-column-1 {
+    grid-template-columns: 1fr;
+}
+.macro-column-2 {
+    grid-template-columns: 1fr 1fr;
+}
+.macro-column-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.macro-column-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.macro-column-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.macro-btn button {
+    width: auto; 
+    padding-left: 8px; 
+    padding-right: 8px; 
+    margin: 8px; 
+    min-width: 120px;
+}

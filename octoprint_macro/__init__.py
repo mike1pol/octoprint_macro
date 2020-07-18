@@ -1,60 +1,53 @@
 # coding=utf-8
 from __future__ import absolute_import
-
-### (Don't forget to remove me)
-# This is a basic skeleton for your plugin's __init__.py. You probably want to adjust the class name of your plugin
-# as well as the plugin mixins it's subclassing from. This is really just a basic skeleton to get you started,
-# defining your plugin as a template plugin, settings and asset plugin. Feel free to add or remove mixins
-# as necessary.
-#
-# Take a look at the documentation on what other plugin mixins are available.
-
 import octoprint.plugin
 
 class SidebarmacrosPlugin(octoprint.plugin.SettingsPlugin,
                           octoprint.plugin.AssetPlugin,
                           octoprint.plugin.TemplatePlugin):
 
-	##~~ SettingsPlugin mixin
 	def get_settings_defaults(self):
 		return dict(
+			column = 1,
 			macros = [
-				dict(name="Home", macro="G28", active=True)
+				dict(name="Home", macro="G28", active=True, type = "default")
 			]
 		)
+
+	def get_settings_version(self):
+		return 1
+
+	def on_settings_migrate(self, target, current=None):
+		if current is None or current < 1:
+			new_macros = []
+			self._logger.info(self._settings.get(['macros']))
+			for macros in self._settings.get(['macros']):
+				macros['type'] = "default"
+				new_macros.append(macros)
+			self._settings.set(['macros'], new_macros)
+			self._settings.set(['column'], 1)
 
 	def get_template_configs(self):
 		return [
 			dict(type="settings", custom_bindings=True, template="macro_settings.jinja2"),
 			dict(type="sidebar", icon="rocket", custom_bindings=True, template="macro_sidebar.jinja2")
 		]
-	##~~ AssetPlugin mixin
 
 	def get_assets(self):
-		# Define your plugin's asset files to automatically include in the
-		# core UI here.
 		return dict(
-			js=["js/macro.js", "js/macro_settings.js"]
+			js=["js/macro.js", "js/macro_settings.js"],
+			css=["css/macro.css"]
 		)
 
-	##~~ Softwareupdate hook
-
 	def get_update_information(self):
-		# Define the configuration for your plugin to use with the Software Update
-		# Plugin here. See https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html
-		# for details.
 		return dict(
 			sidebarmacros=dict(
 				displayName="Macro Plugin",
 				displayVersion=self._plugin_version,
-
-				# version check: github repository
 				type="github_release",
 				user="mike1pol",
 				repo="octoprint_macro",
 				current=self._plugin_version,
-
-				# update method: pip
 				pip="https://github.com/mike1pol/octoprint_macro/archive/{target_version}.zip"
 			)
 		)

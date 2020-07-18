@@ -14,11 +14,11 @@ plugin_package = "octoprint_macro"
 plugin_name = "Macro"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "0.1.1"
+plugin_version = "0.2.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Macro"""
+plugin_description = """Adds feature to create various gcode macros and display them in sidebar menu"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "Mikhail Poluboyarinov"
