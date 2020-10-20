@@ -13,17 +13,22 @@ $(function () {
         self.isActive = function () {
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
+        function executeCommand (i, command) {
+            setTimeout(function () {
+                OctoPrint.control.sendGcode(command.toUpperCase().trim())
+            }, i * 300);
+        }
         self.executeMacro = function () {
             const macro = this.macro();
             const commands = macro.split('\n');
             for (let i = 0; i < commands.length; i += 1) {
                 const command = commands[i];
                 if (!command.includes(';;')) {
-                    OctoPrint.control.sendGcode(command.trim());
+                    executeCommand(i, command);
                 } else if (!command.startsWith(';;')) {
                     const idx = command.indexOf(';;');
                     const newCommand = command.slice(0, idx);
-                    OctoPrint.control.sendGcode(newCommand.trim());
+                    executeCommand(i, newCommand);
                 }
             }
         }
