@@ -13,24 +13,30 @@ $(function () {
         self.isActive = function () {
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
-        function executeCommand (i, command) {
-            setTimeout(function () {
-                OctoPrint.control.sendGcode(command.toUpperCase().trim())
-            }, i * 300);
+        function executeCommands(commands) {
+            if (commands.length > 0) {
+                const command = commands.shift();
+                OctoPrint.control
+                    .sendGcode(command)
+                    .then(() => executeCommands(commands))
+                    .catch(e => console.error(e))
+            }
         }
         self.executeMacro = function () {
             const macro = this.macro();
             const commands = macro.split('\n');
+            const executeCommand = [];
             for (let i = 0; i < commands.length; i += 1) {
                 const command = commands[i];
                 if (!command.includes(';;')) {
-                    executeCommand(i, command);
+                    executeCommand.push(command.toUpperCase());
                 } else if (!command.startsWith(';;')) {
                     const idx = command.indexOf(';;');
                     const newCommand = command.slice(0, idx);
-                    executeCommand(i, newCommand);
+                    executeCommand.push(newCommand.toUpperCase());
                 }
             }
+            executeCommands(executeCommand);
         }
         self.getClass = function () {
             var columns = this.settings.settings.plugins.macro.column();
