@@ -10,7 +10,11 @@ $(function () {
         self.settings = parameters[0];
         self.loginState = parameters[1];
         self.connectionState = parameters[2];
-        self.isActive = function () {
+        self.isActive = function (data) {
+            const dop = data.dop();
+            if (dop && self.connectionState.isPrinting()) {
+                return false;
+            }
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
         function executeCommands(commands) {

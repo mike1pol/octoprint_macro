@@ -1,32 +1,23 @@
 <form class="form-horizontal">
+   <legend>Settings:</legend>
    <div class="control-group">
-      <label class="control-label">{{ _('Columns:')}}</label>
+      <label for="mCC" class="control-label">{{ _('Columns:')}}</label>
       <div class="controls">
          <div class="row-fluid">
-            <input type="number" class="span2 input-block-level" data-bind="value: settings.settings.plugins.macro.column" />
+            <input id="mCC" type="number" class="span2 input-block-level" data-bind="value: settings.settings.plugins.macro.column" />
          </div>
       </div>
    </div>
+   <legend>List:</legend>
    <div data-bind="foreach: settings.settings.plugins.macro.macros" style="margin-bottom: 12px">
       <div class="control-group">
-         <label class="control-label">{{ _('Name') }}</label>
+         <label data-bind="attr: { 'for': $parent.bindFor('mName', $context) }" class="control-label">{{ _('Name') }}</label>
          <div class="controls">
             <div class="row-fluid">
                <div class="span4">
-                 <input type="text" class="input-block-level" data-bind="value: name"/>
+                 <input data-bind="value: name, attr: { 'id': $parent.bindFor('mName', $context) }" type="text" class="input-block-level"/>
                </div>
-               <div class="span4">
-                  <select data-bind="value: type">
-                     <option value="default">Default</option>
-                     <option value="primary">Primary</option>
-                     <option value="info">Info</option>
-                     <option value="success">Success</option>
-                     <option value="danger">Danger</option>
-                     <option value="warning">Warning</option>
-                  </select>
-               </div>
-               <div class="span1">
-                 <input type="checkbox" class="input-block-level" data-bind="checked: active"/>
+               <div class="span5">
                </div>
                <div class="span2">
                   <a href='#' data-bind='click: $parent.moveMacroUp' class="fa fa-chevron-up"></a>
@@ -36,20 +27,50 @@
             </div>
          </div>
       </div>
-      <label class="control-label">{{ _('Command') }}</label>
-      <div class="controls macro-mb20">
-          <div class="row-fluid">
-            <div class="span8">
-               <textarea rows="4" class="block" data-bind="value: macro">
-               </textarea>
-            </div>
-            <div class="span2"></div>
-          </div>
+      <div class="control-group">
+         <label class="control-label">{{ _('Settings') }}</label>
+         <div class="controls">
+               <div class="span4">
+                 {{ _('Active:') }} <input type="checkbox" data-bind="checked: active"/>
+               </div>
+               <div class="span4">
+                 {{ _('Disabled when printing:') }} <input type="checkbox" data-bind="checked: dop"/>
+               </div>
+         </div>
       </div>
+      <div class="control-group">
+         <label class="control-label" data-bind="attr: { 'for': $parent.bindFor('mColor', $context) }">{{ _('Color') }}</label>
+         <div class="controls">
+            <div class="input-append">
+               <select data-bind="attr: { 'id': $parent.bindFor('mColor', $context) }, value: type">
+                  <option value="default">Default</option>
+                  <option value="primary">Primary</option>
+                  <option value="info">Info</option>
+                  <option value="success">Success</option>
+                  <option value="danger">Danger</option>
+                  <option value="warning">Warning</option>
+               </select>
+               <button class="btn" data-bind="css: $parent.getBtnClass(type)">&nbsp;</button>
+            </div>
+         </div>
+      </div>
+      <div class="control-group">
+         <label class="control-label" data-bind="attr: { 'for': $parent.bindFor('mCommand', $context) }">{{ _('Command') }}</label>
+         <div class="controls">
+             <div class="row-fluid">
+               <div class="span8">
+                  <textarea rows="4" class="block" data-bind="attr: { 'id': $parent.bindFor('mCommand', $context) }, value: macro">
+                  </textarea>
+               </div>
+               <div class="span2"></div>
+             </div>
+         </div>
+      </div>
+      <hr>
    </div>
    <div class="control-group">
       <div class="controls">
-         <button data-bind='click: addMacro' type="button"><i class="fa fa-plus-circle"></i> {{ _('Add Macro') }}</button>
+         <button class="btn btn-secondary" data-bind='click: addMacro' type="button"><i class="fa fa-plus-circle"></i> {{ _('Add Macro') }}</button>
       </div>
    </div>
 </form>

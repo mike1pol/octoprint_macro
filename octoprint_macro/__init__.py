@@ -10,12 +10,12 @@ class SidebarmacrosPlugin(octoprint.plugin.SettingsPlugin,
 		return dict(
 			column = 1,
 			macros = [
-				dict(name="Home", macro="G28", active=True, type = "default")
+				dict(name="Home", macro="G28", active=True, type = "default", dop=True)
 			]
 		)
 
 	def get_settings_version(self):
-		return 1
+		return 2
 
 	def on_settings_migrate(self, target, current=None):
 		if current is None or current < 1:
@@ -26,6 +26,13 @@ class SidebarmacrosPlugin(octoprint.plugin.SettingsPlugin,
 				new_macros.append(macros)
 			self._settings.set(['macros'], new_macros)
 			self._settings.set(['column'], 1)
+		if current < 2:
+			new_macros = []
+			self._logger.info(self._settings.get(['macros']))
+			for macros in self._settings.get(['macros']):
+				macros['dop'] = False
+				new_macros.append(macros)
+			self._settings.set(['macros'], new_macros)
 
 	def get_template_configs(self):
 		return [

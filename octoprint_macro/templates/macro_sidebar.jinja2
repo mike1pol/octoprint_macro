@@ -2,7 +2,7 @@
    <div class="controls">
       <div class="macro-btn" data-bind="css: getClass(), foreach: settings.settings.plugins.macro.macros">
          <!-- ko if: active -->
-         <button class="btn btn-block" data-bind="css: $parent.getBtnClass(type), text: name, click: $parent.executeMacro, enable: $parent.isActive()"></button>
+         <button class="btn btn-block" data-bind="css: $parent.getBtnClass(type), text: name, click: $parent.executeMacro, enable: $parent.isActive($data)"></button>
          <!-- /ko -->
       </div>
    </div>

@@ -13,9 +13,13 @@ $(function () {
                 name: 'Macro',
                 macro: '',
                 type: 'default',
-                active: true
+                active: true,
+                dop: false
             });
         }
+        self.bindFor = function (prefix, ctx) {
+            return `${prefix}-${ctx.$index()}`;
+        };
         self.removeMacro = function (macro) {
             self.settings.settings.plugins.macro.macros.remove(macro);
         }
@@ -27,21 +31,23 @@ $(function () {
             self.moveItemDown(self.settings.settings.plugins.macro.macros, macro)
         }
 
-        self.moveItemDown = function(list, item) {
+        self.moveItemDown = function (list, item) {
             var i = list().indexOf(item);
             if (i < list().length - 1) {
                 var rawList = list();
-               list.splice(i, 2, rawList[i + 1], rawList[i]);
+                list.splice(i, 2, rawList[i + 1], rawList[i]);
             }
-         }
-         
-         self.moveItemUp = function(list, item) {
+        }
+        self.getBtnClass = function (type) {
+            return `btn-${typeof type === 'function' ? type() : type}`;
+        }
+        self.moveItemUp = function (list, item) {
             var i = list().indexOf(item);
             if (i > 0) {
-               var rawList = list();
-               list.splice(i-1, 2, rawList[i], rawList[i-1]);
+                var rawList = list();
+                list.splice(i - 1, 2, rawList[i], rawList[i - 1]);
             }
-         }
+        }
     }
     OCTOPRINT_VIEWMODELS.push({
         construct: MacroSettingsViewModel,
