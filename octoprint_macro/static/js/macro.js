@@ -10,6 +10,7 @@ $(function () {
         self.settings = parameters[0];
         self.loginState = parameters[1];
         self.connectionState = parameters[2];
+		self.terminal = parameters[3]; //Hooks into the Terminal Tab
         self.isActive = function (data) {
             const dop = data.dop();
             if (dop && self.connectionState.isPrinting()) {
@@ -18,29 +19,26 @@ $(function () {
             return self.connectionState.isOperational() && self.loginState.isUser();
         }
         function executeCommands(commands) {
-            if (commands.length > 0) {
-                const command = commands.shift();
-                OctoPrint.control
-                    .sendGcode(command)
-                    .then(() => executeCommands(commands))
-                    .catch(e => console.error(e))
-            }
+            var splitCommands = commands.split("\n'");     
+            var len = splitCommands.length;
+            for(var i=0;i<len;i++){
+                self.terminal.command(splitCommands[i]);
+                self.terminal.sendCommand();
+				}
         }
         self.executeMacro = function () {
             const macro = this.macro();
             const commands = macro.split('\n');
-            const executeCommand = [];
             for (let i = 0; i < commands.length; i += 1) {
                 const command = commands[i];
                 if (!command.includes(';;')) {
-                    executeCommand.push(command.toUpperCase());
+					executeCommands(command);
                 } else if (!command.startsWith(';;')) {
                     const idx = command.indexOf(';;');
                     const newCommand = command.slice(0, idx);
-                    executeCommand.push(newCommand.toUpperCase());
+                    executeCommands(newCommand);
                 }
             }
-            executeCommands(executeCommand);
         }
         self.getClass = function () {
             var columns = this.settings.settings.plugins.macro.column();
@@ -52,7 +50,7 @@ $(function () {
     }
     OCTOPRINT_VIEWMODELS.push({
         construct: MacroViewModel,
-        dependencies: ["settingsViewModel", "loginStateViewModel", "connectionViewModel"],
+        dependencies: ["settingsViewModel", "loginStateViewModel", "connectionViewModel", "terminalViewModel"],
         elements: ["#sidebar_plugin_macro"]
     });
 });
